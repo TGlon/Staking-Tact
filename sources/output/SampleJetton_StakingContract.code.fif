@@ -1,3 +1,5 @@
+ode_modules\@tact-lang\compiler\stdlib\stdlib.fc` `D:\TekNix\Tact\Staking-Tact
+ode_modules\@tact-lang\compiler\stdlib\stdlib_ex.fc` `D:/TekNix/Tact/Staking-Tact/sources/output/SampleJetton_StakingContract.code.fc` incl:`D:/TekNix/Tact/Staking-Tact/sources/output/SampleJetton_StakingContract.headers.fc` incl:`D:/TekNix/Tact/Staking-Tact/sources/output/SampleJetton_StakingContract.stdlib.fc` incl:`D:/TekNix/Tact/Staking-Tact/sources/output/SampleJetton_StakingContract.constants.fc` incl:`D:/TekNix/Tact/Staking-Tact/sources/output/SampleJetton_StakingContract.storage.fc` 
 PROGRAM{
   DECLPROC __tact_verify_address
   DECLPROC __tact_load_address
@@ -727,7 +729,6 @@ PROGRAM{
     s12 PUSH
     257 PUSHINT
     __tact_dict_get_slice_int INLINECALLDICT
-    __tact_not_null INLINECALLDICT
     DUP
     ISNULL
     IF:<{
@@ -739,13 +740,18 @@ PROGRAM{
       __tact_dict_set_slice_int INLINECALLDICT
     }>ELSE<{
       DUP
+      __tact_not_null INLINECALLDICT
       -1 GTINT
       IF:<{
+        __tact_not_null INLINECALLDICT
         s6 PUSH
         ADD
-        s1 s5 XCHG
         267 PUSHINT
-        s12 s1 PUXC
+        SWAP
+        __tact_not_null INLINECALLDICT
+        s12 PUSH
+        s3 s7 XCHG
+        SWAP
         257 PUSHINT
         __tact_dict_set_slice_int INLINECALLDICT
         s0 s4 XCHG
@@ -754,18 +760,19 @@ PROGRAM{
       }>
       s0 s4 XCHG
     }>
-    s10 s9 s5 XC2PU
+    s2 s5 XCPU
+    ADD
+    s0 s6 XCHG
+    INC
+    s10 s9 s5 XCHG3
     $TransferEvent$_constructor_sender_address_jetton_amount_score INLINECALLDICT
     $TransferEvent$_store_cell INLINECALLDICT
     $global_emit INLINECALLDICT
-    s0 s3 XCHG2
-    ADD
-    s0 s3 XCHG
-    INC
     s5 s7 XCHG
     s4 s6 XCHG
-    s4 s5 XCHG2
-    s1 s3 XCHG
+    s0 s1 s5 XCHG3
+    s3 s3 XCHG2
+    s0 s4 XCHG
   }>
   $StakingContract$_internal_binary_GetWeighted PROCINLINE:<{
     __tact_context_get INLINECALLDICT
@@ -887,7 +894,7 @@ PROGRAM{
     209474421377847335869795010607481022628 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d61326171323239334572474c61435a53624a3850367a69746a7058643738784251633976764779634b583562} PUSHSLICE
+    x{697066733a2f2f516d6138506e61636774374871333854676b426546545339627658564e6e454e7732733343356861474b434e6e77} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH

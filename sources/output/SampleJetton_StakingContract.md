@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: StakingContract
-BOC Size: 2127 bytes
+BOC Size: 2140 bytes
 
 # Types
 Total Types: 13
@@ -76,7 +76,7 @@ Argument: StakeTokenAmount
 ## get_return_staking_data
 
 # Error Codes
-2: Stack undeflow
+2: Stack underflow
 3: Stack overflow
 4: Integer overflow
 5: Integer out of expected range

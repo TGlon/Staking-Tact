@@ -83,15 +83,15 @@ contract StakingContract {
             StakeRecord{stake_address: stake.from, jjj_stake_amount: stake.amount, score: score}
         );
         // Update the weight of the user, if the user is in the list, then add it
-        let previous_score: Int = self.score_list.get(stake.from)!!;
+        let previous_score: Int? = self.score_list.get(stake.from);
         if (previous_score == null) {
             self.score_list.set(stake.from, score);
-        } else if (previous_score >= 0) {
-            previous_score = previous_score + score;
-            self.score_list.set(stake.from, previous_score);
+        } else if (previous_score!! >= 0) {
+            previous_score = (previous_score!! + score);
+            self.score_list.set(stake.from, previous_score!!);
         }
-        self.total_score = self.total_score + score;
-        self.index = self.index + 1;
+        self.total_score = (self.total_score + score);
+        self.index = (self.index + 1);
         // Submit the Log Event
         emit(TransferEvent{sender_address: stake.from, jetton_amount: stake.amount, score: score}.toCell());
     }
