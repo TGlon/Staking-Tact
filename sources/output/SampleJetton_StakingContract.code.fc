@@ -55,6 +55,20 @@
     return (($self'this_contract_jettonWallet, $self'owner, $self'index, $self'stake_record, $self'score_list, $self'start_time, $self'total_score, $self'parameter), $StakingData$_constructor_index_this_contract_jettonWallet_total_score_parameter($self'index, $self'this_contract_jettonWallet, $self'total_score, $self'parameter));
 }
 
+((slice, slice, int, cell, cell, int, int, int), slice) $StakingContract$_fun_get_contract_jettonWallet((slice, slice, int, cell, cell, int, int, int) $self) impure inline_ref {
+    var (($self'this_contract_jettonWallet, $self'owner, $self'index, $self'stake_record, $self'score_list, $self'start_time, $self'total_score, $self'parameter)) = $self;
+    return (($self'this_contract_jettonWallet, $self'owner, $self'index, $self'stake_record, $self'score_list, $self'start_time, $self'total_score, $self'parameter), $self'this_contract_jettonWallet);
+}
+
+((slice, slice, int, cell, cell, int, int, int), int) $StakingContract$_fun_get_address_score((slice, slice, int, cell, cell, int, int, int) $self, slice $target) impure inline_ref {
+    var (($self'this_contract_jettonWallet, $self'owner, $self'index, $self'stake_record, $self'score_list, $self'start_time, $self'total_score, $self'parameter)) = $self;
+    if ((~ null?(__tact_dict_get_slice_int($self'score_list, 267, $target, 257)))) {
+        return (($self'this_contract_jettonWallet, $self'owner, $self'index, $self'stake_record, $self'score_list, $self'start_time, $self'total_score, $self'parameter), __tact_not_null(__tact_dict_get_slice_int($self'score_list, 267, $target, 257)));
+    } else {
+        return (($self'this_contract_jettonWallet, $self'owner, $self'index, $self'stake_record, $self'score_list, $self'start_time, $self'total_score, $self'parameter), -1);
+    }
+}
+
 ;;
 ;; Receivers of a Contract StakingContract
 ;;
@@ -85,7 +99,6 @@
     }
     $self'total_score = ($self'total_score + $score);
     $self'index = ($self'index + 1);
-    $global_emit($TransferEvent$_store_cell($TransferEvent$_constructor_sender_address_jetton_amount_score($stake'from, $stake'amount, $score)));
     return (($self'this_contract_jettonWallet, $self'owner, $self'index, $self'stake_record, $self'score_list, $self'start_time, $self'total_score, $self'parameter), ());
 }
 
@@ -114,6 +127,13 @@
 
 (((slice, slice, int, cell, cell, int, int, int)), ()) %$StakingContract$_internal_empty((slice, slice, int, cell, cell, int, int, int) $self) impure inline {
     var ($self'this_contract_jettonWallet, $self'owner, $self'index, $self'stake_record, $self'score_list, $self'start_time, $self'total_score, $self'parameter) = $self;
+    return (($self'this_contract_jettonWallet, $self'owner, $self'index, $self'stake_record, $self'score_list, $self'start_time, $self'total_score, $self'parameter), ());
+}
+
+(((slice, slice, int, cell, cell, int, int, int)), ()) $StakingContract$_internal_binary_Deploy((slice, slice, int, cell, cell, int, int, int) $self, (int) $deploy) impure inline {
+    var ($self'this_contract_jettonWallet, $self'owner, $self'index, $self'stake_record, $self'score_list, $self'start_time, $self'total_score, $self'parameter) = $self;
+    var ($deploy'queryId) = $deploy;
+    ($self'this_contract_jettonWallet, $self'owner, $self'index, $self'stake_record, $self'score_list, $self'start_time, $self'total_score, $self'parameter)~$StakingContract$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId)));
     return (($self'this_contract_jettonWallet, $self'owner, $self'index, $self'stake_record, $self'score_list, $self'start_time, $self'total_score, $self'parameter), ());
 }
 
@@ -160,6 +180,19 @@ _ %get_return_staking_data() method_id(123291) {
     return $StakingData$_to_external(res);
 }
 
+_ %get_contract_jettonWallet() method_id(68159) {
+    var self = $StakingContract$_contract_load();
+    var res = self~$StakingContract$_fun_get_contract_jettonWallet();
+    return res;
+}
+
+_ %get_address_score(slice $$target) method_id(80050) {
+    slice $target = __tact_verify_address($$target);
+    var self = $StakingContract$_contract_load();
+    var res = self~$StakingContract$_fun_get_address_score($target);
+    return res;
+}
+
 _ supported_interfaces() method_id {
     return (
         "org.ton.introspection.v0"H >> 128,
@@ -170,7 +203,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://Qma8Pnacgt7Hq38TgkBeFTS9bvXVNnENw2s3C5haGKCNnw";
+    return "ipfs://QmeHmW8WHV5YS5594KPbWAg8kQ1UKkbT6SYEK6reh3pqmQ";
 }
 
 _ lazy_deployment_completed() method_id {
@@ -202,7 +235,7 @@ _ lazy_deployment_completed() method_id {
     }
     
     ;; Receive TokenNotification message
-    if (op == 2905361094) {
+    if (op == 1935855772) {
         var msg = in_msg~$TokenNotification$_load();
         self~$StakingContract$_internal_binary_TokenNotification(msg);
         return (self, true);
@@ -225,6 +258,13 @@ _ lazy_deployment_completed() method_id {
     ;; Receive empty message
     if ((op == 0) & (slice_bits(in_msg) <= 32)) {
         self~%$StakingContract$_internal_empty();
+        return (self, true);
+    }
+    
+    ;; Receive Deploy message
+    if (op == 2490013878) {
+        var msg = in_msg~$Deploy$_load();
+        self~$StakingContract$_internal_binary_Deploy(msg);
         return (self, true);
     }
     

@@ -1,5 +1,6 @@
+import "@stdlib/deploy";
 // ===== TEP64 Standard: Jetton Messages ===== //
-message TokenTransfer {
+message(0xf8a7ea5)  TokenTransfer {
     queryId: Int as uint64;
     amount: Int as coins;
     destination: Address;
@@ -9,7 +10,7 @@ message TokenTransfer {
     forward_payload: Slice as remaining;
 }
 
-message TokenNotification {
+message(0x7362d09c) TokenNotification {
     queryId: Int as uint64;
     amount: Int as coins;
     from: Address;
@@ -44,7 +45,7 @@ message GetWeighted {
     1/ Need index since the the depositor might be depositing multiple times.
     2/ Each deposits might have different time frame(duration)                                    
 */
-contract StakingContract { 
+contract StakingContract with Deployable{ 
     this_contract_jettonWallet: Address;
     owner: Address;
 
@@ -93,7 +94,7 @@ contract StakingContract {
         self.total_score = (self.total_score + score);
         self.index = (self.index + 1);
         // Submit the Log Event
-        emit(TransferEvent{sender_address: stake.from, jetton_amount: stake.amount, score: score}.toCell());
+        // emit(TransferEvent{sender_address: stake.from, jetton_amount: stake.amount, score: score}.toCell());
     }
     
     fun score_function(jjj_amount: Int): Int {
@@ -185,6 +186,18 @@ contract StakingContract {
                 total_score: self.total_score,
                 parameter: self.parameter
             };
+    }
+
+    get fun get_contract_jettonWallet(): Address{
+        return self.this_contract_jettonWallet;
+    }
+
+    get fun get_address_score(target: Address): Int{
+        if (self.score_list.get(target) != null){
+            return self.score_list.get(target)!!;
+        }else{
+            return -1;
+        }
     }
 }
 // ===== Data Struct ===== //

@@ -36,6 +36,10 @@ forall X -> X __tact_not_null(X x) inline {
     return __tact_context;
 }
 
+slice __tact_context_get_sender() inline {
+    return __tact_context_sender;
+}
+
 builder __tact_store_bool(builder b, int v) inline {
     return b.store_int(v, 1);
 }
@@ -142,11 +146,6 @@ slice $global_emptySlice() impure inline {
     send_raw_message($c, $params'mode);
 }
 
-() $global_emit(cell $body) impure inline {
-    cell $c = end_cell(store_ref(store_uint(begin_cell(), 15211807202738752817960438464513, 104), $body));
-    send_raw_message($c, 0);
-}
-
 ((slice, slice, int, cell, cell, int, int, int), ()) $StakingContract$_fun_forward((slice, slice, int, cell, cell, int, int, int) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref {
     var (($self'this_contract_jettonWallet, $self'owner, $self'index, $self'stake_record, $self'score_list, $self'start_time, $self'total_score, $self'parameter)) = $self;
     var ($init) = $init;
@@ -168,5 +167,11 @@ slice $global_emptySlice() impure inline {
         }
     }
     $global_send($SendParameters$_constructor_bounce_to_value_mode_body_code_data($bounce, $to, 0, 66, $body, $code, $data));
+    return (($self'this_contract_jettonWallet, $self'owner, $self'index, $self'stake_record, $self'score_list, $self'start_time, $self'total_score, $self'parameter), ());
+}
+
+((slice, slice, int, cell, cell, int, int, int), ()) $StakingContract$_fun_notify((slice, slice, int, cell, cell, int, int, int) $self, cell $body) impure inline {
+    var (($self'this_contract_jettonWallet, $self'owner, $self'index, $self'stake_record, $self'score_list, $self'start_time, $self'total_score, $self'parameter)) = $self;
+    ($self'this_contract_jettonWallet, $self'owner, $self'index, $self'stake_record, $self'score_list, $self'start_time, $self'total_score, $self'parameter)~$StakingContract$_fun_forward(__tact_context_get_sender(), $body, false, null());
     return (($self'this_contract_jettonWallet, $self'owner, $self'index, $self'stake_record, $self'score_list, $self'start_time, $self'total_score, $self'parameter), ());
 }

@@ -7,17 +7,19 @@ PROGRAM{
   DECLPROC __tact_my_balance
   DECLPROC __tact_not_null
   DECLPROC __tact_context_get
+  DECLPROC __tact_context_get_sender
   DECLPROC __tact_store_bool
   DECLPROC __tact_dict_set_int_cell
   DECLPROC __tact_dict_get_int_cell
   DECLPROC __tact_dict_set_slice_int
   DECLPROC __tact_dict_get_slice_int
   DECLPROC __tact_slice_eq_bits
+  DECLPROC $Deploy$_load
+  DECLPROC $DeployOk$_store
+  DECLPROC $DeployOk$_store_cell
   DECLPROC $TokenTransfer$_store
   DECLPROC $TokenTransfer$_store_cell
   DECLPROC $TokenNotification$_load
-  DECLPROC $TransferEvent$_store
-  DECLPROC $TransferEvent$_store_cell
   DECLPROC $AddingJettonAddress$_load
   DECLPROC $Unstake$_load
   DECLPROC $GetWeighted$_load
@@ -42,7 +44,6 @@ PROGRAM{
   DECLPROC $Cell$_fun_asSlice
   DECLPROC $global_emptySlice
   DECLPROC $global_send
-  DECLPROC $global_emit
   DECLPROC $StakingContract$_fun_score_function
   DECLPROC $StakingContract$_fun_get_ratio_of_stake
   DECLPROC $StakingContract$_fun_get_ratio_of_stake_2
@@ -51,24 +52,30 @@ PROGRAM{
   DECLPROC $StakingContract$_fun_get_user_stake_amount
   DECLPROC $StakingData$_constructor_index_this_contract_jettonWallet_total_score_parameter
   DECLPROC $StakingContract$_fun_get_return_staking_data
+  DECLPROC $StakingContract$_fun_get_contract_jettonWallet
+  DECLPROC $StakingContract$_fun_get_address_score
   DECLPROC $SendParameters$_constructor_bounce_to_value_mode_body_code_data
   DECLPROC $StakingContract$_fun_forward
+  DECLPROC $StakingContract$_fun_notify
   DECLPROC $StakeRecord$_constructor_stake_address_jjj_stake_amount_score
-  DECLPROC $TransferEvent$_constructor_sender_address_jetton_amount_score
   DECLPROC $SendParameters$_constructor_to_value_mode_bounce_body
   DECLPROC $PassScoreToRoundContract$_constructor_checked_address_return_score
   DECLPROC $TokenTransfer$_constructor_queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload
+  DECLPROC $DeployOk$_constructor_queryId
   DECLPROC $StakingContract$_internal_binary_AddingJettonAddress
   DECLPROC $StakingContract$_internal_binary_TokenNotification
   DECLPROC $StakingContract$_internal_binary_GetWeighted
   DECLPROC $StakingContract$_internal_binary_Unstake
   DECLPROC %$StakingContract$_internal_empty
+  DECLPROC $StakingContract$_internal_binary_Deploy
   87169 DECLMETHOD %get_ratio_of_stake
   84802 DECLMETHOD %get_ratio_of_stake_2
   88931 DECLMETHOD %get_ratio_of_stake_3
   70349 DECLMETHOD %get_user_stake_record
   88891 DECLMETHOD %get_user_stake_amount
   123291 DECLMETHOD %get_return_staking_data
+  68159 DECLMETHOD %get_contract_jettonWallet
+  80050 DECLMETHOD %get_address_score
   113617 DECLMETHOD supported_interfaces
   121275 DECLMETHOD get_abi_ipfs
   115390 DECLMETHOD lazy_deployment_completed
@@ -115,6 +122,9 @@ PROGRAM{
   __tact_context_get PROCINLINE:<{
     __tact_context GETGLOB
     4 UNTUPLE
+  }>
+  __tact_context_get_sender PROCINLINE:<{
+    __tact_context_sender GETGLOB
   }>
   __tact_store_bool PROCINLINE:<{
     SWAP
@@ -175,8 +185,29 @@ PROGRAM{
   __tact_slice_eq_bits PROCINLINE:<{
     SDEQ
   }>
+  $Deploy$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    2490013878 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    64 LDU
+    SWAP
+  }>
+  $DeployOk$_store PROCINLINE:<{
+    2952335191 PUSHINT
+    ROT
+    32 STU
+    64 STU
+  }>
+  $DeployOk$_store_cell PROCINLINE:<{
+    NEWC
+    SWAP
+    $DeployOk$_store INLINECALLDICT
+    ENDC
+  }>
   $TokenTransfer$_store PROCREF:<{
-    3846950910 PUSHINT
+    260734629 PUSHINT
     s0 s8 XCHG2
     32 STU
     s1 s6 XCHG
@@ -214,7 +245,7 @@ PROGRAM{
   $TokenNotification$_load PROCINLINE:<{
     32 LDU
     SWAP
-    2905361094 PUSHINT
+    1935855772 PUSHINT
     EQUAL
     129 THROWIFNOT
     64 LDU
@@ -222,22 +253,6 @@ PROGRAM{
     __tact_load_address INLINECALLDICT
     s3 s0 s3 XC2PU
     s2 s3 XCHG
-  }>
-  $TransferEvent$_store PROCINLINE:<{
-    1382804827 PUSHINT
-    s0 s4 XCHG2
-    32 STU
-    ROT
-    __tact_store_address INLINECALLDICT
-    SWAP
-    STGRAMS
-    128 STU
-  }>
-  $TransferEvent$_store_cell PROCINLINE:<{
-    NEWC
-    3 -ROLL
-    $TransferEvent$_store INLINECALLDICT
-    ENDC
   }>
   $AddingJettonAddress$_load PROCINLINE:<{
     32 LDU
@@ -534,16 +549,6 @@ PROGRAM{
     SWAP
     SENDRAWMSG
   }>
-  $global_emit PROCINLINE:<{
-    NEWC
-    15211807202738752817960438464513 PUSHINT
-    SWAP
-    104 STU
-    STREF
-    ENDC
-    0 PUSHINT
-    SENDRAWMSG
-  }>
   $StakingContract$_fun_score_function PROCREF:<{
     1000000000000000000 PUSHINT
     MUL
@@ -650,6 +655,28 @@ PROGRAM{
     s3 PUSH
     $StakingData$_constructor_index_this_contract_jettonWallet_total_score_parameter INLINECALLDICT
   }>
+  $StakingContract$_fun_get_contract_jettonWallet PROCREF:<{
+    s7 PUSH
+  }>
+  $StakingContract$_fun_get_address_score PROCREF:<{
+    s4 PUSH
+    267 PUSHINT
+    s2 PUSH
+    257 PUSHINT
+    __tact_dict_get_slice_int INLINECALLDICT
+    ISNULL
+    NOT
+    IFJMP:<{
+      267 PUSHINT
+      s5 PUSH
+      s0 s2 XCHG
+      257 PUSHINT
+      __tact_dict_get_slice_int INLINECALLDICT
+      __tact_not_null INLINECALLDICT
+    }>
+    DROP
+    -1 PUSHINT
+  }>
   $SendParameters$_constructor_bounce_to_value_mode_body_code_data PROCINLINE:<{
   }>
   $StakingContract$_fun_forward PROCREF:<{
@@ -674,9 +701,14 @@ PROGRAM{
     $SendParameters$_constructor_bounce_to_value_mode_body_code_data INLINECALLDICT
     $global_send INLINECALLDICT
   }>
-  $StakeRecord$_constructor_stake_address_jjj_stake_amount_score PROCINLINE:<{
+  $StakingContract$_fun_notify PROCINLINE:<{
+    __tact_context_get_sender INLINECALLDICT
+    SWAP
+    FALSE
+    PUSHNULL
+    $StakingContract$_fun_forward INLINECALLDICT
   }>
-  $TransferEvent$_constructor_sender_address_jetton_amount_score PROCINLINE:<{
+  $StakeRecord$_constructor_stake_address_jjj_stake_amount_score PROCINLINE:<{
   }>
   $SendParameters$_constructor_to_value_mode_bounce_body PROCINLINE:<{
     s1 s4 XCHG
@@ -687,6 +719,8 @@ PROGRAM{
   $PassScoreToRoundContract$_constructor_checked_address_return_score PROCINLINE:<{
   }>
   $TokenTransfer$_constructor_queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload PROCINLINE:<{
+  }>
+  $DeployOk$_constructor_queryId PROCINLINE:<{
   }>
   $StakingContract$_internal_binary_AddingJettonAddress PROCINLINE:<{
     s8 POP
@@ -716,26 +750,26 @@ PROGRAM{
     8 2 BLKSWAP
     s8 PUSH
     $StakingContract$_fun_score_function INLINECALLDICT
+    s10 PUSH
     257 PUSHINT
-    s11 s10 s1 PUSH3
+    s11 s2 XCPU
     $StakeRecord$_constructor_stake_address_jjj_stake_amount_score INLINECALLDICT
     $StakeRecord$_store_cell INLINECALLDICT
-    s8 PUSH
-    s3 s8 XCHG
-    SWAP
+    s6 s10 s0 XCHG3
+    s7 s(-1) PUXC
     __tact_dict_set_int_cell INLINECALLDICT
-    s4 PUSH
+    s3 PUSH
     267 PUSHINT
-    s12 PUSH
+    s11 PUSH
     257 PUSHINT
     __tact_dict_get_slice_int INLINECALLDICT
     DUP
     ISNULL
     IF:<{
       DROP
-      s0 s4 XCHG
+      s1 s3 XCHG
       267 PUSHINT
-      s11 s6 PUSH2
+      s0 s10 s9 XC2PU
       257 PUSHINT
       __tact_dict_set_slice_int INLINECALLDICT
     }>ELSE<{
@@ -744,35 +778,31 @@ PROGRAM{
       -1 GTINT
       IF:<{
         __tact_not_null INLINECALLDICT
-        s6 PUSH
+        s9 PUSH
         ADD
         267 PUSHINT
         SWAP
         __tact_not_null INLINECALLDICT
-        s12 PUSH
-        s3 s7 XCHG
-        SWAP
+        s3 s5 XCHG
+        s1 s11 s0 XCHG3
         257 PUSHINT
         __tact_dict_set_slice_int INLINECALLDICT
-        s0 s4 XCHG
+        s0 s2 XCHG
       }>ELSE<{
         DROP
+        s9 POP
       }>
-      s0 s4 XCHG
+      s0 s2 XCHG
     }>
-    s2 s5 XCPU
+    s2 s7 XCHG2
     ADD
-    s0 s6 XCHG
+    s0 s3 XCHG
     INC
-    s10 s9 s5 XCHG3
-    $TransferEvent$_constructor_sender_address_jetton_amount_score INLINECALLDICT
-    $TransferEvent$_store_cell INLINECALLDICT
-    $global_emit INLINECALLDICT
     s5 s7 XCHG
     s4 s6 XCHG
-    s0 s1 s5 XCHG3
-    s3 s3 XCHG2
+    s0 s5 XCHG
     s0 s4 XCHG
+    s1 s3 s3 XCHG3
   }>
   $StakingContract$_internal_binary_GetWeighted PROCINLINE:<{
     __tact_context_get INLINECALLDICT
@@ -853,6 +883,11 @@ PROGRAM{
   }>
   %$StakingContract$_internal_empty PROCINLINE:<{
   }>
+  $StakingContract$_internal_binary_Deploy PROCINLINE:<{
+    $DeployOk$_constructor_queryId INLINECALLDICT
+    $DeployOk$_store_cell INLINECALLDICT
+    $StakingContract$_fun_notify INLINECALLDICT
+  }>
   %get_ratio_of_stake PROC:<{
     $StakingContract$_contract_load INLINECALLDICT
     8 ROLL
@@ -887,6 +922,18 @@ PROGRAM{
     8 4 BLKDROP2
     $StakingData$_to_external INLINECALLDICT
   }>
+  %get_contract_jettonWallet PROC:<{
+    $StakingContract$_contract_load INLINECALLDICT
+    $StakingContract$_fun_get_contract_jettonWallet INLINECALLDICT
+    8 1 BLKDROP2
+  }>
+  %get_address_score PROC:<{
+    __tact_verify_address INLINECALLDICT
+    $StakingContract$_contract_load INLINECALLDICT
+    8 ROLL
+    $StakingContract$_fun_get_address_score INLINECALLDICT
+    8 1 BLKDROP2
+  }>
   supported_interfaces PROC:<{
     123515602279859691144772641439386770278 PUSHINT
     209801025412363888721030803524359905849 PUSHINT
@@ -894,7 +941,7 @@ PROGRAM{
     209474421377847335869795010607481022628 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d6138506e61636774374871333854676b426546545339627658564e6e454e7732733343356861474b434e6e77} PUSHSLICE
+    x{697066733a2f2f516d65486d5738574856355953353539344b5062574167386b5131554b6b6254365359454b367265683370716d51} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -928,7 +975,7 @@ PROGRAM{
       TRUE
     }>
     DUP
-    2905361094 PUSHINT
+    1935855772 PUSHINT
     EQUAL
     IFJMP:<{
       DROP
@@ -957,15 +1004,26 @@ PROGRAM{
       $StakingContract$_internal_binary_Unstake INLINECALLDICT
       TRUE
     }>
+    DUP
     0 EQINT
-    SWAP
+    s2 PUSH
     SBITS
     33 LESSINT
     AND
     IFJMP:<{
+      2DROP
       %$StakingContract$_internal_empty INLINECALLDICT
       TRUE
     }>
+    2490013878 PUSHINT
+    EQUAL
+    IFJMP:<{
+      $Deploy$_load INLINECALLDICT
+      NIP
+      $StakingContract$_internal_binary_Deploy INLINECALLDICT
+      TRUE
+    }>
+    DROP
     FALSE
   }>
   recv_internal PROC:<{

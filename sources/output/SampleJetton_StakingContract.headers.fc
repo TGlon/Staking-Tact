@@ -21,6 +21,9 @@ forall X -> X __tact_not_null(X x) inline;
 ;; __tact_context_get
 (int, slice, int, slice) __tact_context_get() inline;
 
+;; __tact_context_get_sender
+slice __tact_context_get_sender() inline;
+
 ;; __tact_store_bool
 builder __tact_store_bool(builder b, int v) inline;
 
@@ -39,6 +42,15 @@ int __tact_dict_get_slice_int(cell d, int kl, slice k, int vl) inline;
 ;; __tact_slice_eq_bits
 int __tact_slice_eq_bits(slice a, slice b) inline;
 
+;; $Deploy$_load
+(slice, ((int))) $Deploy$_load(slice sc_0) inline;
+
+;; $DeployOk$_store
+builder $DeployOk$_store(builder build_0, (int) v) inline;
+
+;; $DeployOk$_store_cell
+cell $DeployOk$_store_cell((int) v) inline;
+
 ;; $TokenTransfer$_store
 builder $TokenTransfer$_store(builder build_0, (int, int, slice, slice, cell, int, slice) v) inline_ref;
 
@@ -47,12 +59,6 @@ cell $TokenTransfer$_store_cell((int, int, slice, slice, cell, int, slice) v) in
 
 ;; $TokenNotification$_load
 (slice, ((int, int, slice, slice))) $TokenNotification$_load(slice sc_0) inline;
-
-;; $TransferEvent$_store
-builder $TransferEvent$_store(builder build_0, (slice, int, int) v) inline;
-
-;; $TransferEvent$_store_cell
-cell $TransferEvent$_store_cell((slice, int, int) v) inline;
 
 ;; $AddingJettonAddress$_load
 (slice, ((slice))) $AddingJettonAddress$_load(slice sc_0) inline;
@@ -126,9 +132,6 @@ slice $global_emptySlice() impure inline;
 ;; $global_send
 () $global_send((int, slice, int, int, cell, cell, cell) $params) impure inline_ref;
 
-;; $global_emit
-() $global_emit(cell $body) impure inline;
-
 ;; $StakingContract$_fun_score_function
 ((slice, slice, int, cell, cell, int, int, int), int) $StakingContract$_fun_score_function((slice, slice, int, cell, cell, int, int, int) $self, int $jjj_amount) impure inline_ref;
 
@@ -153,17 +156,23 @@ slice $global_emptySlice() impure inline;
 ;; $StakingContract$_fun_get_return_staking_data
 ((slice, slice, int, cell, cell, int, int, int), (int, slice, int, int)) $StakingContract$_fun_get_return_staking_data((slice, slice, int, cell, cell, int, int, int) $self) impure inline_ref;
 
+;; $StakingContract$_fun_get_contract_jettonWallet
+((slice, slice, int, cell, cell, int, int, int), slice) $StakingContract$_fun_get_contract_jettonWallet((slice, slice, int, cell, cell, int, int, int) $self) impure inline_ref;
+
+;; $StakingContract$_fun_get_address_score
+((slice, slice, int, cell, cell, int, int, int), int) $StakingContract$_fun_get_address_score((slice, slice, int, cell, cell, int, int, int) $self, slice $target) impure inline_ref;
+
 ;; $SendParameters$_constructor_bounce_to_value_mode_body_code_data
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_bounce_to_value_mode_body_code_data(int bounce, slice to, int value, int mode, cell body, cell code, cell data) inline;
 
 ;; $StakingContract$_fun_forward
 ((slice, slice, int, cell, cell, int, int, int), ()) $StakingContract$_fun_forward((slice, slice, int, cell, cell, int, int, int) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
 
+;; $StakingContract$_fun_notify
+((slice, slice, int, cell, cell, int, int, int), ()) $StakingContract$_fun_notify((slice, slice, int, cell, cell, int, int, int) $self, cell $body) impure inline;
+
 ;; $StakeRecord$_constructor_stake_address_jjj_stake_amount_score
 ((slice, int, int)) $StakeRecord$_constructor_stake_address_jjj_stake_amount_score(slice stake_address, int jjj_stake_amount, int score) inline;
-
-;; $TransferEvent$_constructor_sender_address_jetton_amount_score
-((slice, int, int)) $TransferEvent$_constructor_sender_address_jetton_amount_score(slice sender_address, int jetton_amount, int score) inline;
 
 ;; $SendParameters$_constructor_to_value_mode_bounce_body
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_bounce_body(slice to, int value, int mode, int bounce, cell body) inline;
@@ -173,3 +182,6 @@ slice $global_emptySlice() impure inline;
 
 ;; $TokenTransfer$_constructor_queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload
 ((int, int, slice, slice, cell, int, slice)) $TokenTransfer$_constructor_queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload(int queryId, int amount, slice destination, slice response_destination, cell custom_payload, int forward_ton_amount, slice forward_payload) inline;
+
+;; $DeployOk$_constructor_queryId
+((int)) $DeployOk$_constructor_queryId(int queryId) inline;

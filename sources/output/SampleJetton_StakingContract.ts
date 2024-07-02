@@ -190,6 +190,137 @@ function dictValueParserSendParameters(): DictionaryValue<SendParameters> {
     }
 }
 
+export type Deploy = {
+    $$type: 'Deploy';
+    queryId: bigint;
+}
+
+export function storeDeploy(src: Deploy) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(2490013878, 32);
+        b_0.storeUint(src.queryId, 64);
+    };
+}
+
+export function loadDeploy(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 2490013878) { throw Error('Invalid prefix'); }
+    let _queryId = sc_0.loadUintBig(64);
+    return { $$type: 'Deploy' as const, queryId: _queryId };
+}
+
+function loadTupleDeploy(source: TupleReader) {
+    let _queryId = source.readBigNumber();
+    return { $$type: 'Deploy' as const, queryId: _queryId };
+}
+
+function storeTupleDeploy(source: Deploy) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.queryId);
+    return builder.build();
+}
+
+function dictValueParserDeploy(): DictionaryValue<Deploy> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeDeploy(src)).endCell());
+        },
+        parse: (src) => {
+            return loadDeploy(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type DeployOk = {
+    $$type: 'DeployOk';
+    queryId: bigint;
+}
+
+export function storeDeployOk(src: DeployOk) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(2952335191, 32);
+        b_0.storeUint(src.queryId, 64);
+    };
+}
+
+export function loadDeployOk(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 2952335191) { throw Error('Invalid prefix'); }
+    let _queryId = sc_0.loadUintBig(64);
+    return { $$type: 'DeployOk' as const, queryId: _queryId };
+}
+
+function loadTupleDeployOk(source: TupleReader) {
+    let _queryId = source.readBigNumber();
+    return { $$type: 'DeployOk' as const, queryId: _queryId };
+}
+
+function storeTupleDeployOk(source: DeployOk) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.queryId);
+    return builder.build();
+}
+
+function dictValueParserDeployOk(): DictionaryValue<DeployOk> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeDeployOk(src)).endCell());
+        },
+        parse: (src) => {
+            return loadDeployOk(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type FactoryDeploy = {
+    $$type: 'FactoryDeploy';
+    queryId: bigint;
+    cashback: Address;
+}
+
+export function storeFactoryDeploy(src: FactoryDeploy) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(1829761339, 32);
+        b_0.storeUint(src.queryId, 64);
+        b_0.storeAddress(src.cashback);
+    };
+}
+
+export function loadFactoryDeploy(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 1829761339) { throw Error('Invalid prefix'); }
+    let _queryId = sc_0.loadUintBig(64);
+    let _cashback = sc_0.loadAddress();
+    return { $$type: 'FactoryDeploy' as const, queryId: _queryId, cashback: _cashback };
+}
+
+function loadTupleFactoryDeploy(source: TupleReader) {
+    let _queryId = source.readBigNumber();
+    let _cashback = source.readAddress();
+    return { $$type: 'FactoryDeploy' as const, queryId: _queryId, cashback: _cashback };
+}
+
+function storeTupleFactoryDeploy(source: FactoryDeploy) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.queryId);
+    builder.writeAddress(source.cashback);
+    return builder.build();
+}
+
+function dictValueParserFactoryDeploy(): DictionaryValue<FactoryDeploy> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeFactoryDeploy(src)).endCell());
+        },
+        parse: (src) => {
+            return loadFactoryDeploy(src.loadRef().beginParse());
+        }
+    }
+}
+
 export type TokenTransfer = {
     $$type: 'TokenTransfer';
     queryId: bigint;
@@ -273,7 +404,7 @@ export type TokenNotification = {
 export function storeTokenNotification(src: TokenNotification) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeUint(2905361094, 32);
+        b_0.storeUint(1935855772, 32);
         b_0.storeUint(src.queryId, 64);
         b_0.storeCoins(src.amount);
         b_0.storeAddress(src.from);
@@ -283,7 +414,7 @@ export function storeTokenNotification(src: TokenNotification) {
 
 export function loadTokenNotification(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 2905361094) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 1935855772) { throw Error('Invalid prefix'); }
     let _queryId = sc_0.loadUintBig(64);
     let _amount = sc_0.loadCoins();
     let _from = sc_0.loadAddress();
@@ -713,8 +844,8 @@ function initStakingContract_init_args(src: StakingContract_init_args) {
 }
 
 async function StakingContract_init(this_contract_jettonWallet: Address, _owner: Address, parameter: bigint) {
-    const __code = Cell.fromBase64('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');
-    const __system = Cell.fromBase64('te6cckECMAEACFoAAQHAAQEFoCuZAgEU/wD0pBP0vPLICwMCAWIEFQN60AHQ0wMBcbCjAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhUUFMDbwT4YQL4Yts8VRfbPPLggiwFFAToAZIwf+BwIddJwh+VMCDXCx/eIIIKJwLduo9GMNMfAYIKJwLduvLggfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgxOPhBbyQQI18DggDvjFOBxwXy9Ihwbds8f+AgghCtLErGuuMCIIIQE0xoeroGBwgNABYAAAAAU3VjY2VzcwE6bW0ibrOZWyBu8tCAbyIBkTLiECRwAwSAQlAj2zwSAXYw0x8BghCtLErGuvLggdM/+gD6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIVBMDECNsFNs8fwkE9DAy+EFvJBAjXwMqgUKeAscF8vRVcSjbPIEBAVR7ochVIFog10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZY+gLLf8koEDgBIG6VMFn0WjCUQTP0FeIkgQELLIEBAUEz9ApvoZQB1wAwkltt4iBu4w9RJaAGpEqVJAoLDAA4MASBAQtTtoEBASFulVtZ9FkwmMgBzwBBM/RB4gBwICBu8tCAwv+OKiBu8tCAJqCBAQsBIG7y0IAsEDcBgQEBIW6VW1n0WTCYyAHPAEEz9EHiBJEw4gQApshVIIIQUmvtW1AEyx9YINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WAfoCy3/JyIJYwAAAAAAAAAAAAAAAAQHLZ8zJcPsAEFcQRkAVUDMEArqOrjDTHwGCEBNMaHq68uCB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiDHgIIIQhRVzj7qOlTDTHwGCEIUVc4+68uCB0x8BMds8f+DAAAHXScEhsJF/4HAODwHW+EFvJBAjXwMlgQELI4EBAUEz9ApvoZQB1wAwkltt4iBu8tCAgRm2IcIA8vRwgEIEfwPIWYIQ5f1/KVADyx8BINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8Wyz/JE0RAFEMwbW3bPH8SAfb4QW8kECNfAyWBAQsigQEBQTP0Cm+hlAHXADCSW23iIG7y0ICCAOE8AcIA8vQmgQEBI1n0DW+hkjBt3yBukjBtjivQ+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6ANN/VSBsE28D4iBu8tCAbyMwMYEbZSEQAvLCAPL0gQEBbSBukjBtji8gbvLQgG8jyFUgWiDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlj6Ast/yeIQOUFAIG6VMFn0WjCUQTP0FeJwgEJwIvgobYIImJaAyMnQEEYQWRBOyFVg2zzJK0MUSQAUQzBtbds8ERIAyIIQ5UvP/lAIyx8Wyz9QBPoCWCDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFgEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYhbrOVfwHKAMyUcDLKAOIB+gIBzxYByshxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsAEwCYfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzAC4yPhDAcx/AcoAVXBQhyDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WE8sf9AD0AMsfEst/yw/J7VQCASAWJQIBIBcZAhG5LN2zzbPGyBgsGAACJAIBSBocAhWy0LbPFUH2zxsgYCwbAWpUeHZUeHZThwgREAgQfxBuEF0QTBA7ECoREBnbPDFsYoIID0JAqAGpBBB4EGcQVhBFEDRBMCQCASAdHwIVrkDtniqD7Z42QMAsHgFsVHh2VHh2U4cIERAIEH8QbhBdEEwQOxAqERAZ2zwxbGKCEDuaygCoAakEEHgQZxBWEEUQNEEwJAIDeaAgIgIPt3tnm2eNkDAsIQACIwITtHtniqD7Z42QMCwjAWpUeHZUeHZThwgREAgQfxBuEF0QTBA7ECoREBnbPDFsYqdkAakEgGSpBBB4EGcQVhBFEDRBMCQAMIIwDeC2s6dkAACo+COpBFMxqIED6KkEoQIBICYnAJW7vRgnBc7D1dLK57HoTsOdZKhRtmgnCd1jUtK2R8syLTry398WI5gnAgVcAbgGdjlM5YOq5HJbLDgnCdl05as07LczoOlm2UZuikgCASAoKwIBICkqABGwr7tRNDSAAGAAdbJu40NWlwZnM6Ly9RbWE4UG5hY2d0N0hxMzhUZ2tCZUZUUzlidlhWTm5FTncyczNDNWhhR0tDTm53ggAhG0M3tnm2eNkJAsLwHQ7UTQ1AH4Y9IAAY5Q+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAdMf9AT0BNMf03/TD1VwbBjg+CjXCwqDCbry4IktAZj6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgBgQEB1wBVIAPRWNs8LgAWcG1tIhA0QTD4IwIACFR1cSOqWvxc');
+    const __code = Cell.fromBase64('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');
+    const __system = Cell.fromBase64('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');
     let builder = beginCell();
     builder.storeRef(__system);
     builder.storeUint(0, 1);
@@ -759,8 +890,11 @@ const StakingContract_types: ABIType[] = [
     {"name":"StateInit","header":null,"fields":[{"name":"code","type":{"kind":"simple","type":"cell","optional":false}},{"name":"data","type":{"kind":"simple","type":"cell","optional":false}}]},
     {"name":"Context","header":null,"fields":[{"name":"bounced","type":{"kind":"simple","type":"bool","optional":false}},{"name":"sender","type":{"kind":"simple","type":"address","optional":false}},{"name":"value","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"raw","type":{"kind":"simple","type":"slice","optional":false}}]},
     {"name":"SendParameters","header":null,"fields":[{"name":"bounce","type":{"kind":"simple","type":"bool","optional":false}},{"name":"to","type":{"kind":"simple","type":"address","optional":false}},{"name":"value","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"mode","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"body","type":{"kind":"simple","type":"cell","optional":true}},{"name":"code","type":{"kind":"simple","type":"cell","optional":true}},{"name":"data","type":{"kind":"simple","type":"cell","optional":true}}]},
+    {"name":"Deploy","header":2490013878,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
+    {"name":"DeployOk","header":2952335191,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
+    {"name":"FactoryDeploy","header":1829761339,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"cashback","type":{"kind":"simple","type":"address","optional":false}}]},
     {"name":"TokenTransfer","header":260734629,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"destination","type":{"kind":"simple","type":"address","optional":false}},{"name":"response_destination","type":{"kind":"simple","type":"address","optional":false}},{"name":"custom_payload","type":{"kind":"simple","type":"cell","optional":true}},{"name":"forward_ton_amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"forward_payload","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},
-    {"name":"TokenNotification","header":2905361094,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"from","type":{"kind":"simple","type":"address","optional":false}},{"name":"forward_payload","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},
+    {"name":"TokenNotification","header":1935855772,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"from","type":{"kind":"simple","type":"address","optional":false}},{"name":"forward_payload","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},
     {"name":"TransferEvent","header":1382804827,"fields":[{"name":"sender_address","type":{"kind":"simple","type":"address","optional":false}},{"name":"jetton_amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"score","type":{"kind":"simple","type":"uint","optional":false,"format":128}}]},
     {"name":"AddingJettonAddress","header":36111069,"fields":[{"name":"this_contract_jettonWallet","type":{"kind":"simple","type":"address","optional":false}}]},
     {"name":"Unstake","header":2232775567,"fields":[{"name":"index_id","type":{"kind":"simple","type":"uint","optional":false,"format":32}}]},
@@ -778,6 +912,8 @@ const StakingContract_getters: ABIGetter[] = [
     {"name":"get_user_stake_record","arguments":[],"returnType":{"kind":"dict","key":"int","value":"StakeRecord","valueFormat":"ref"}},
     {"name":"get_user_stake_amount","arguments":[],"returnType":{"kind":"dict","key":"address","value":"int"}},
     {"name":"get_return_staking_data","arguments":[],"returnType":{"kind":"simple","type":"StakingData","optional":false}},
+    {"name":"get_contract_jettonWallet","arguments":[],"returnType":{"kind":"simple","type":"address","optional":false}},
+    {"name":"get_address_score","arguments":[{"name":"target","type":{"kind":"simple","type":"address","optional":false}}],"returnType":{"kind":"simple","type":"int","optional":false,"format":257}},
 ]
 
 const StakingContract_receivers: ABIReceiver[] = [
@@ -786,6 +922,7 @@ const StakingContract_receivers: ABIReceiver[] = [
     {"receiver":"internal","message":{"kind":"typed","type":"GetWeighted"}},
     {"receiver":"internal","message":{"kind":"typed","type":"Unstake"}},
     {"receiver":"internal","message":{"kind":"empty"}},
+    {"receiver":"internal","message":{"kind":"typed","type":"Deploy"}},
 ]
 
 export class StakingContract implements Contract {
@@ -818,7 +955,7 @@ export class StakingContract implements Contract {
         this.init = init;
     }
     
-    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: AddingJettonAddress | TokenNotification | GetWeighted | Unstake | null) {
+    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: AddingJettonAddress | TokenNotification | GetWeighted | Unstake | null | Deploy) {
         
         let body: Cell | null = null;
         if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'AddingJettonAddress') {
@@ -835,6 +972,9 @@ export class StakingContract implements Contract {
         }
         if (message === null) {
             body = new Cell();
+        }
+        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'Deploy') {
+            body = beginCell().store(storeDeploy(message)).endCell();
         }
         if (body === null) { throw new Error('Invalid message type'); }
         
@@ -884,6 +1024,21 @@ export class StakingContract implements Contract {
         let builder = new TupleBuilder();
         let source = (await provider.get('get_return_staking_data', builder.build())).stack;
         const result = loadTupleStakingData(source);
+        return result;
+    }
+    
+    async getGetContractJettonWallet(provider: ContractProvider) {
+        let builder = new TupleBuilder();
+        let source = (await provider.get('get_contract_jettonWallet', builder.build())).stack;
+        let result = source.readAddress();
+        return result;
+    }
+    
+    async getGetAddressScore(provider: ContractProvider, target: Address) {
+        let builder = new TupleBuilder();
+        builder.writeAddress(target);
+        let source = (await provider.get('get_address_score', builder.build())).stack;
+        let result = source.readBigNumber();
         return result;
     }
     

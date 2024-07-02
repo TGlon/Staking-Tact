@@ -23,14 +23,47 @@
 }
 
 ;;
+;; Type: Deploy
+;; Header: 0x946a98b6
+;; TLB: deploy#946a98b6 queryId:uint64 = Deploy
+;;
+
+(slice, ((int))) $Deploy$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2490013878);
+    var v'queryId = sc_0~load_uint(64);
+    return (sc_0, (v'queryId));
+}
+
+;;
+;; Type: DeployOk
+;; Header: 0xaff90f57
+;; TLB: deploy_ok#aff90f57 queryId:uint64 = DeployOk
+;;
+
+builder $DeployOk$_store(builder build_0, (int) v) inline {
+    var (v'queryId) = v;
+    build_0 = store_uint(build_0, 2952335191, 32);
+    build_0 = build_0.store_uint(v'queryId, 64);
+    return build_0;
+}
+
+cell $DeployOk$_store_cell((int) v) inline {
+    return $DeployOk$_store(begin_cell(), v).end_cell();
+}
+
+((int)) $DeployOk$_constructor_queryId(int queryId) inline {
+    return (queryId);
+}
+
+;;
 ;; Type: TokenTransfer
-;; Header: 0xe54bcffe
-;; TLB: token_transfer#e54bcffe queryId:uint64 amount:coins destination:address response_destination:address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer
+;; Header: 0x0f8a7ea5
+;; TLB: token_transfer#0f8a7ea5 queryId:uint64 amount:coins destination:address response_destination:address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer
 ;;
 
 builder $TokenTransfer$_store(builder build_0, (int, int, slice, slice, cell, int, slice) v) inline_ref {
     var (v'queryId, v'amount, v'destination, v'response_destination, v'custom_payload, v'forward_ton_amount, v'forward_payload) = v;
-    build_0 = store_uint(build_0, 3846950910, 32);
+    build_0 = store_uint(build_0, 260734629, 32);
     build_0 = build_0.store_uint(v'queryId, 64);
     build_0 = build_0.store_coins(v'amount);
     build_0 = __tact_store_address(build_0, v'destination);
@@ -51,40 +84,17 @@ cell $TokenTransfer$_store_cell((int, int, slice, slice, cell, int, slice) v) in
 
 ;;
 ;; Type: TokenNotification
-;; Header: 0xad2c4ac6
-;; TLB: token_notification#ad2c4ac6 queryId:uint64 amount:coins from:address forward_payload:remainder<slice> = TokenNotification
+;; Header: 0x7362d09c
+;; TLB: token_notification#7362d09c queryId:uint64 amount:coins from:address forward_payload:remainder<slice> = TokenNotification
 ;;
 
 (slice, ((int, int, slice, slice))) $TokenNotification$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 2905361094);
+    throw_unless(129, sc_0~load_uint(32) == 1935855772);
     var v'queryId = sc_0~load_uint(64);
     var v'amount = sc_0~load_coins();
     var v'from = sc_0~__tact_load_address();
     var v'forward_payload = sc_0;
     return (sc_0, (v'queryId, v'amount, v'from, v'forward_payload));
-}
-
-;;
-;; Type: TransferEvent
-;; Header: 0x526bed5b
-;; TLB: transfer_event#526bed5b sender_address:address jetton_amount:coins score:uint128 = TransferEvent
-;;
-
-builder $TransferEvent$_store(builder build_0, (slice, int, int) v) inline {
-    var (v'sender_address, v'jetton_amount, v'score) = v;
-    build_0 = store_uint(build_0, 1382804827, 32);
-    build_0 = __tact_store_address(build_0, v'sender_address);
-    build_0 = build_0.store_coins(v'jetton_amount);
-    build_0 = build_0.store_uint(v'score, 128);
-    return build_0;
-}
-
-cell $TransferEvent$_store_cell((slice, int, int) v) inline {
-    return $TransferEvent$_store(begin_cell(), v).end_cell();
-}
-
-((slice, int, int)) $TransferEvent$_constructor_sender_address_jetton_amount_score(slice sender_address, int jetton_amount, int score) inline {
-    return (sender_address, jetton_amount, score);
 }
 
 ;;

@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: StakingContract
-BOC Size: 2140 bytes
+BOC Size: 2249 bytes
 
 # Types
-Total Types: 13
+Total Types: 16
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -17,12 +17,24 @@ Signature: `Context{bounced:bool,sender:address,value:int257,raw:^slice}`
 TLB: `_ bounce:bool to:address value:int257 mode:int257 body:Maybe ^cell code:Maybe ^cell data:Maybe ^cell = SendParameters`
 Signature: `SendParameters{bounce:bool,to:address,value:int257,mode:int257,body:Maybe ^cell,code:Maybe ^cell,data:Maybe ^cell}`
 
+## Deploy
+TLB: `deploy#946a98b6 queryId:uint64 = Deploy`
+Signature: `Deploy{queryId:uint64}`
+
+## DeployOk
+TLB: `deploy_ok#aff90f57 queryId:uint64 = DeployOk`
+Signature: `DeployOk{queryId:uint64}`
+
+## FactoryDeploy
+TLB: `factory_deploy#6d0ff13b queryId:uint64 cashback:address = FactoryDeploy`
+Signature: `FactoryDeploy{queryId:uint64,cashback:address}`
+
 ## TokenTransfer
-TLB: `token_transfer#e54bcffe queryId:uint64 amount:coins destination:address response_destination:address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer`
+TLB: `token_transfer#0f8a7ea5 queryId:uint64 amount:coins destination:address response_destination:address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer`
 Signature: `TokenTransfer{queryId:uint64,amount:coins,destination:address,response_destination:address,custom_payload:Maybe ^cell,forward_ton_amount:coins,forward_payload:remainder<slice>}`
 
 ## TokenNotification
-TLB: `token_notification#ad2c4ac6 queryId:uint64 amount:coins from:address forward_payload:remainder<slice> = TokenNotification`
+TLB: `token_notification#7362d09c queryId:uint64 amount:coins from:address forward_payload:remainder<slice> = TokenNotification`
 Signature: `TokenNotification{queryId:uint64,amount:coins,from:address,forward_payload:remainder<slice>}`
 
 ## TransferEvent
@@ -58,7 +70,7 @@ TLB: `pass_score_to_round_contract#e5fd7f29 checked_address:address return_score
 Signature: `PassScoreToRoundContract{checked_address:address,return_score:uint64}`
 
 # Get Methods
-Total Get Methods: 6
+Total Get Methods: 8
 
 ## get_ratio_of_stake
 Argument: StakeTokenAmount
@@ -74,6 +86,11 @@ Argument: StakeTokenAmount
 ## get_user_stake_amount
 
 ## get_return_staking_data
+
+## get_contract_jettonWallet
+
+## get_address_score
+Argument: target
 
 # Error Codes
 2: Stack underflow
